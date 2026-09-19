@@ -1,0 +1,27 @@
+services:
+  arena:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3100
+      APP_ORIGIN: ${APP_ORIGIN}
+      MAX_PARTICIPANTS: ${MAX_PARTICIPANTS:-60}
+      MAX_SSE_CLIENTS: ${MAX_SSE_CLIENTS:-200}
+      MAX_SSE_PER_IP: ${MAX_SSE_PER_IP:-100}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_REAL_NAME: ${ADMIN_REAL_NAME:-赛事管理员}
+      ADMIN_CLASS: ${ADMIN_CLASS:-网络安全工作室}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      FLAG_SECRET: ${FLAG_SECRET}
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    ports:
+      - "127.0.0.1:3100:3100"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3100/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

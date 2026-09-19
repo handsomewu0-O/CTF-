@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+!.env.example
+data/*
+!data/.gitkeep
+uploads/*
+!uploads/.gitkeep
+artifacts/
+playwright-report/
+test-results/
+coverage/
+*.sqlite*
+*.db*
+.DS_Store
+*.log

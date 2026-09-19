@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "challenges": [
+    {
+      "slug": "welcome-protocol",
+      "title": "Welcome Protocol",
+      "category": "misc",
+      "description": "阅读题目说明，找到约定的答案并提交到平台。",
+      "baseScore": 100,
+      "flag": "flag{replace_this_with_a_random_secret}",
+      "targetUrl": "https://challenge.example.com/welcome",
+      "active": true,
+      "sortOrder": 10,
+      "files": []
+    },
+    {
+      "slug": "hidden-packet",
+      "title": "Hidden Packet",
+      "category": "数据安全",
+      "description": "分析题目附件并恢复隐藏信息。ZIP 题目包中可以使用 files 字段引用附件。",
+      "baseScore": 300,
+      "flag": "flag{use_a_different_random_secret}",
+      "targetUrl": "/targets/hidden-packet",
+      "active": true,
+      "sortOrder": 20,
+      "files": []
+    }
+  ]
+}

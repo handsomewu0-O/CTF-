@@ -1,0 +1,13 @@
+.env
+.git
+.gitignore
+node_modules
+npm-debug.log*
+data/*
+!data/.gitkeep
+uploads/*
+!uploads/.gitkeep
+artifacts
+playwright-report
+test-results
+tests

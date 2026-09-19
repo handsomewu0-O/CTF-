@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#031a3d">
+  <meta name="description" content="天选杯——网安工作室个人挑战赛平台">
+  <title>天选杯——网安工作室个人挑战赛</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+  <div class="noise-layer" aria-hidden="true"></div>
+
+  <section id="auth-screen" class="auth-screen">
+    <header class="public-header">
+      <a class="brand" href="/" aria-label="NEXUS ARENA 首页">
+        <span class="brand-mark"><i data-lucide="shield-check"></i></span>
+        <span><strong>NEXUS ARENA</strong><small id="auth-subtitle">SECURITY LAB · QUALIFIER</small></span>
+      </a>
+      <nav class="public-nav" aria-label="赛事导航">
+        <a href="#public-overview">赛事概览</a>
+        <a href="#public-schedule">赛程节点</a>
+        <a href="#public-scoring">计分协议</a>
+        <a href="#public-ranking">实时排名</a>
+      </nav>
+      <div class="system-state"><span class="status-pulse"></span><span id="auth-status">系统待命</span><code id="server-clock">--:--:--</code></div>
+    </header>
+
+    <main class="public-main">
+      <section class="auth-main" aria-labelledby="public-title">
+        <div class="hero-brief">
+          <div class="hero-signal"><span></span>LIVE SECURITY QUALIFIER</div>
+          <p class="hero-sequence" aria-hidden="true">01 / RECON / VERIFY / CAPTURE / 10</p>
+          <h1 id="public-title"><span id="public-hero-name">天选杯</span><strong id="public-hero-subtitle">网安工作室个人挑战赛</strong></h1>
+          <p class="hero-copy">在统一的八小时窗口内完成多维安全挑战。系统记录每次有效提交、解题顺序与最终积分，用可验证的数据识别扎实的分析能力与攻防素养。</p>
+          <div class="hero-metrics" aria-label="赛事关键信息">
+            <div class="countdown-metric"><span id="hero-countdown-days" class="countdown-days hidden"></span><strong id="hero-countdown-value">--:--:--</strong><span>比赛倒计时</span><small>COUNTDOWN</small></div>
+            <div><strong>08H</strong><span>比赛时长</span><small>DURATION</small></div>
+            <div class="support-metric"><strong>计科242 吴帅 (Nu!L)</strong><span>技术支持</span><small>TECH SUPPORT</small></div>
+          </div>
+          <div class="hero-phase">
+            <span class="hero-phase-label">CURRENT PHASE</span>
+            <strong id="public-phase-label">筹备中</strong>
+            <span id="public-countdown">等待赛事启动</span>
+          </div>
+        </div>
+
+        <section id="access-console" class="access-panel panel-edge" aria-labelledby="access-title">
+          <div class="panel-kicker"><span>IDENTITY TERMINAL</span><span class="terminal-code">AUTH://01</span></div>
+          <h2 id="access-title">进入竞赛控制台</h2>
+          <p class="muted">账号信息与比赛记录由服务器统一保存。</p>
+
+          <div class="segmented" role="tablist" aria-label="账号操作">
+            <button class="segment active" type="button" data-auth-tab="login" role="tab" aria-selected="true" aria-controls="login-form">登录</button>
+            <button class="segment" type="button" data-auth-tab="register" role="tab" aria-selected="false" aria-controls="register-form">注册</button>
+          </div>
+
+          <form id="login-form" class="auth-form">
+            <label>用户名或邮箱
+              <span class="input-shell"><i data-lucide="user-round"></i><input name="identifier" autocomplete="username" required placeholder="输入用户名或邮箱"></span>
+            </label>
+            <label>密码
+              <span class="input-shell"><i data-lucide="key-round"></i><input name="password" type="password" autocomplete="current-password" required maxlength="128" placeholder="输入登录密码"></span>
+            </label>
+            <button class="primary-button full" type="submit"><i data-lucide="log-in"></i><span>验证并进入</span></button>
+          </form>
+
+          <form id="register-form" class="auth-form hidden">
+            <div id="registration-state" class="registration-state" role="status">
+              <span class="registration-indicator"></span>
+              <div><strong id="registration-state-title">正在读取注册状态</strong><small id="registration-state-detail">请稍候</small></div>
+            </div>
+            <div class="form-grid two">
+              <label>用户名
+                <span class="input-shell"><i data-lucide="at-sign"></i><input name="username" autocomplete="username" required placeholder="排行榜显示名"></span>
+              </label>
+              <label>真实姓名
+                <span class="input-shell"><i data-lucide="badge-check"></i><input name="realName" autocomplete="name" required maxlength="32" placeholder="仅裁判可见"></span>
+              </label>
+            </div>
+            <label>班级
+              <span class="input-shell"><i data-lucide="graduation-cap"></i><input name="className" required maxlength="64" placeholder="例如：网络工程 2024-1 班"></span>
+            </label>
+            <label>邮箱
+              <span class="input-shell"><i data-lucide="mail"></i><input name="email" type="email" autocomplete="email" required maxlength="128" placeholder="name@example.com"></span>
+            </label>
+            <label>密码
+              <span class="input-shell"><i data-lucide="lock-keyhole"></i><input name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="至少 8 位"></span>
+            </label>
+            <button id="register-submit" class="primary-button full" type="submit"><i data-lucide="user-plus"></i><span>创建参赛账号</span></button>
+          </form>
+          <p id="auth-message" class="form-message" role="status"></p>
+          <div class="terminal-foot"><span>ENCRYPTED SESSION</span><span>SQLITE PERSISTENCE</span><span>SERVER VERIFIED</span></div>
+        </section>
+      </section>
+
+      <div class="signal-marquee" aria-hidden="true"><div>
+        <span>IDENTIFY</span><i>01</i><span>ANALYZE</span><i>10</i><span>VALIDATE</span><i>11</i><span>CAPTURE</span><i>00</i>
+        <span>IDENTIFY</span><i>01</i><span>ANALYZE</span><i>10</i><span>VALIDATE</span><i>11</i><span>CAPTURE</span><i>00</i>
+      </div></div>
+
+      <section id="public-overview" class="public-section overview-section">
+        <div class="section-heading reveal-on-scroll"><span class="section-index">01</span><div><span class="eyebrow">EVENT INTELLIGENCE</span><h2>赛事概览</h2></div><p>以攻防视野洞察风险，以工程思维守护数字疆域，在实战中定义新一代网络安全力量。</p></div>
+        <div class="overview-layout">
+          <div class="overview-statement reveal-on-scroll">
+            <p class="lead">于无声处识别威胁，于复杂处建立秩序，让每一次推演都成为守护数字世界的锋芒。</p>
+            <p>天选杯聚焦真实安全问题背后的逻辑、耐力与判断力。参赛者将在限时挑战中跨越多类技术场景，以严谨分析验证猜想，以可靠结果证明能力。</p>
+            <div class="brief-code"><span>MISSION://TIANXUAN-08</span><code>01010100 01011000 01000011 01010100 01000110</code></div>
+          </div>
+          <div class="capability-tracks reveal-on-scroll">
+            <div class="capability-intro"><span class="eyebrow">CORE COMPETENCIES</span><h3>考察的网安素养</h3><p>以技术深度、风险意识和工程纪律为坐标，综合评估参赛者面对未知问题时的判断质量与执行能力。</p></div>
+            <article><span>01</span><div><h3>全局研判</h3><p>从复杂信息中识别关键线索，建立清晰、可验证的分析路径。</p></div><strong>INSIGHT</strong></article>
+            <article><span>02</span><div><h3>攻防实证</h3><p>融会多领域知识，以实验和证据验证安全假设与技术结论。</p></div><strong>VERIFY</strong></article>
+            <article><span>03</span><div><h3>责任边界</h3><p>坚守合规与协作准则，在压力环境中保持严谨、克制与可信。</p></div><strong>ETHICS</strong></article>
+          </div>
+        </div>
+        <div class="category-spectrum reveal-on-scroll" aria-label="赛事能力范围">
+          <span>web</span><span>PWN</span><span>misc</span><span>Crypto</span><span>Reverse</span><span>数据安全</span><span>AI安全</span>
+        </div>
+      </section>
+
+      <section id="public-schedule" class="public-section schedule-section">
+        <div class="section-heading reveal-on-scroll"><span class="section-index">02</span><div><span class="eyebrow">OPERATION TIMELINE</span><h2>赛程节点</h2></div><p>所有状态由服务器时钟控制，关键节点自动同步到每位参赛者。</p></div>
+        <ol class="operation-timeline reveal-on-scroll">
+          <li><span class="timeline-code">01</span><div><small>PREPARATION</small><h3>筹备比赛</h3><p id="public-registration-window">完成赛题校验、平台配置与参赛账号准备。</p></div></li>
+          <li><span class="timeline-code">02</span><div><small>VALIDATION</small><h3>赛前测试</h3><p>核验登录、提交流程、赛事公告与网络环境。</p></div></li>
+          <li class="active"><span class="timeline-code">03</span><div><small>ENGAGE</small><h3>选手比赛</h3><p id="public-start-time">开始时间由管理员统一发布。</p></div></li>
+          <li><span class="timeline-code">04</span><div><small>ADJUDICATION</small><h3>裁判组判决</h3><p id="public-end-time">比赛结束后复核记录并确认最终名次。</p></div></li>
+        </ol>
+      </section>
+
+      <section id="public-scoring" class="public-section scoring-section">
+        <div class="section-heading reveal-on-scroll"><span class="section-index">03</span><div><span class="eyebrow">SCORING PROTOCOL</span><h2>计分协议</h2></div><p>每题基础分相同计入；最先完成的三位选手额外获得首解奖励。</p></div>
+        <div class="score-protocol reveal-on-scroll">
+          <article class="first"><span>RANK 01</span><strong id="bonus-first">+30</strong><p>第一位正确提交</p></article>
+          <article class="second"><span>RANK 02</span><strong id="bonus-second">+20</strong><p>第二位正确提交</p></article>
+          <article class="third"><span>RANK 03</span><strong id="bonus-third">+10</strong><p>第三位正确提交</p></article>
+          <div class="score-formula"><span>TOTAL SCORE</span><strong>Σ BASE + FIRST BLOOD</strong><p>总分降序；同分时，最后一次得分更早者优先。</p></div>
+        </div>
+        <div class="rule-grid reveal-on-scroll">
+          <article><i data-lucide="flag-triangle-right"></i><div><h3>有效提交</h3><p>每题答案仅首次正确提交计分，重复提交不重复得分。</p></div></article>
+          <article><i data-lucide="shield-alert"></i><div><h3>比赛纪律</h3><p>禁止转发答案、使用 AI、攻击比赛平台或干扰其他选手，异常行为保留审计记录。</p></div></article>
+          <article><i data-lucide="user-round-check"></i><div><h3>隐私边界</h3><p>公开榜只展示用户名；姓名、班级和邮箱仅供管理员与裁判核验。</p></div></article>
+        </div>
+      </section>
+
+      <section id="public-ranking" class="public-section ranking-section">
+        <div class="section-heading reveal-on-scroll"><span class="section-index">04</span><div><span class="eyebrow">LIVE TELEMETRY</span><h2>公开实时排名</h2></div><p>公开榜单仅显示用户名；姓名、班级和邮箱只对管理员与裁判可见。</p></div>
+        <div class="public-board panel-edge reveal-on-scroll" aria-label="实时排行榜">
+          <div class="board-heading">
+            <div><span class="eyebrow">LIVE SIGNAL</span><h3 id="public-competition-name">天选杯——网安工作室个人挑战赛</h3></div>
+            <span class="live-badge"><span></span>LIVE</span>
+          </div>
+          <div id="auth-podium" class="mini-podium"></div>
+          <div id="auth-ranking-list" class="auth-ranking-list"></div>
+          <div class="board-footer"><i data-lucide="radio-tower"></i><span>排名数据自动同步</span><span id="auth-updated-at">等待信号</span></div>
+        </div>
+      </section>
+
+      <footer class="public-footer"><a class="brand" href="#"><span class="brand-mark"><i data-lucide="shield-check"></i></span><span><strong>NEXUS ARENA</strong><small>SECURITY LAB · QUALIFIER</small></span></a><p>比赛数据以服务器记录为准</p><a href="#access-console">返回访问终端 <i data-lucide="arrow-up"></i></a></footer>
+    </main>
+  </section>
+
+  <div id="app-shell" class="app-shell hidden">
+    <aside class="sidebar">
+      <a class="brand sidebar-brand" href="#dashboard" data-view-link="dashboard">
+        <span class="brand-mark"><i data-lucide="shield-check"></i></span>
+        <span><strong>NEXUS</strong><small>ARENA CONTROL</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        <button class="nav-item active" data-view="dashboard"><i data-lucide="layout-dashboard"></i><span>总览</span></button>
+        <button class="nav-item" data-view="challenges"><i data-lucide="crosshair"></i><span>赛题</span><span id="challenge-nav-count" class="nav-count">0</span></button>
+        <button class="nav-item" data-view="leaderboard"><i data-lucide="trophy"></i><span>排行榜</span></button>
+        <button class="nav-item" data-view="announcements"><i data-lucide="megaphone"></i><span>公告</span></button>
+        <button id="admin-nav" class="nav-item hidden" data-view="admin"><i data-lucide="terminal-square"></i><span>裁判台</span></button>
+      </nav>
+      <div class="sidebar-signal">
+        <div class="signal-bars"><span></span><span></span><span></span><span></span><span></span></div>
+        <div><small>EVENT STREAM</small><strong>CONNECTED</strong></div>
+      </div>
+      <button id="logout-button" class="nav-item logout-button"><i data-lucide="log-out"></i><span>退出登录</span></button>
+    </aside>
+
+    <section class="workspace">
+      <header class="app-header">
+        <button id="mobile-menu" class="icon-button mobile-only" type="button" aria-label="打开导航"><i data-lucide="menu"></i></button>
+        <div class="header-title"><span id="header-eyebrow" class="eyebrow">MISSION CONTROL</span><h1 id="view-title">比赛总览</h1></div>
+        <div class="header-actions">
+          <div class="contest-chip"><span class="status-pulse"></span><span id="contest-status-label">准备中</span></div>
+          <button id="profile-button" class="user-chip" type="button" aria-label="打开个人资料" title="个人资料">
+            <span id="user-initial" class="avatar-shell">U</span>
+            <div><strong id="current-username">username</strong><small id="current-role">参赛者</small></div>
+          </button>
+        </div>
+      </header>
+
+      <main class="view-container">
+        <section id="view-dashboard" class="view active-view">
+          <div class="mission-strip">
+            <div><span class="eyebrow">CURRENT OPERATION</span><h2 id="dashboard-competition-name">天选杯——网安工作室个人挑战赛</h2><p id="dashboard-subtitle">SECURITY LAB · QUALIFIER</p></div>
+            <div class="countdown-block"><span id="countdown-label">比赛状态</span><span id="countdown-days" class="countdown-days hidden"></span><strong id="countdown-value">--:--:--</strong><small id="countdown-date">等待管理员启动</small></div>
+          </div>
+          <div class="metric-grid">
+            <article class="metric-card cyan"><div class="metric-icon"><i data-lucide="zap"></i></div><div><span>当前得分</span><strong id="metric-score">0</strong><small>POINTS</small></div></article>
+            <article class="metric-card green"><div class="metric-icon"><i data-lucide="flag"></i></div><div><span>已解题目</span><strong id="metric-solves">0</strong><small id="metric-progress">0 / 0</small></div></article>
+            <article class="metric-card amber"><div class="metric-icon"><i data-lucide="chart-no-axes-column-increasing"></i></div><div><span>当前排名</span><strong id="metric-rank">--</strong><small id="metric-participants">0 PLAYERS</small></div></article>
+            <article class="metric-card coral"><div class="metric-icon"><i data-lucide="timer"></i></div><div><span>竞赛状态</span><strong id="metric-status">待命</strong><small>SERVER CONTROLLED</small></div></article>
+          </div>
+          <div class="dashboard-grid">
+            <section class="surface progress-surface"><div class="surface-heading"><div><span class="eyebrow">MISSION MAP</span><h3>分类进度</h3></div><button class="text-button" data-jump="challenges">查看赛题<i data-lucide="arrow-up-right"></i></button></div><div id="category-progress" class="category-progress"></div></section>
+            <section class="surface activity-surface"><div class="surface-heading"><div><span class="eyebrow">LIVE BROADCAST</span><h3>实时解题播报</h3></div><span class="live-badge"><span></span>SYNC</span></div><div id="activity-list" class="activity-list" role="log" aria-live="polite" aria-label="实时解题播报"></div></section>
+          </div>
+          <section class="surface notice-preview"><div class="notice-icon"><i data-lucide="bell-ring"></i></div><div><span class="eyebrow">LATEST NOTICE</span><h3 id="latest-notice-title">暂无公告</h3><p id="latest-notice-content">比赛公告将在这里显示。</p></div><button class="icon-button" data-jump="announcements" aria-label="查看全部公告"><i data-lucide="arrow-right"></i></button></section>
+        </section>
+
+        <section id="view-challenges" class="view">
+          <div class="toolbar"><div id="category-filters" class="filter-row"></div><div class="search-shell"><i data-lucide="search"></i><input id="challenge-search" type="search" placeholder="搜索赛题"></div></div>
+          <div id="challenge-grid" class="challenge-grid"></div>
+          <div id="challenge-empty" class="empty-state hidden"><i data-lucide="scan-search"></i><h3>没有匹配的赛题</h3><p>调整分类或搜索条件后重试。</p></div>
+        </section>
+
+        <section id="view-leaderboard" class="view">
+          <div id="leaderboard-podium" class="leaderboard-podium"></div>
+          <section class="surface table-surface"><div class="surface-heading"><div><span class="eyebrow">GLOBAL RANKING</span><h3>实时积分榜</h3></div><span id="leaderboard-updated" class="sync-time">--</span></div><div class="table-scroll"><table><thead><tr><th>排名</th><th>选手</th><th>解题</th><th>最后得分</th><th class="number-cell">总分</th></tr></thead><tbody id="leaderboard-body"></tbody></table></div></section>
+        </section>
+
+        <section id="view-announcements" class="view">
+          <div id="announcement-list" class="announcement-list"></div>
+          <div id="announcement-empty" class="empty-state hidden"><i data-lucide="bell-off"></i><h3>暂无公告</h3><p>新的赛事信息会实时出现在这里。</p></div>
+        </section>
+
+        <section id="view-admin" class="view">
+          <div class="admin-tabs" role="tablist">
+            <button class="active" data-admin-tab="overview"><i data-lucide="gauge"></i>运行状态</button>
+            <button data-admin-tab="import"><i data-lucide="package-open"></i>导入赛题</button>
+            <button data-admin-tab="users"><i data-lucide="users"></i>参赛人员</button>
+            <button data-admin-tab="settings"><i data-lucide="sliders-horizontal"></i>比赛设置</button>
+          </div>
+          <div id="admin-content"></div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <dialog id="challenge-dialog" class="challenge-dialog">
+    <button class="dialog-close icon-button" type="button" aria-label="关闭"><i data-lucide="x"></i></button>
+    <div class="dialog-category" id="dialog-category">WEB</div>
+    <h2 id="dialog-title">Challenge</h2>
+    <div class="dialog-meta"><span><i data-lucide="database"></i><strong id="dialog-score">0</strong> 分</span><span><i data-lucide="users"></i><strong id="dialog-solves">0</strong> 人解出</span></div>
+    <p id="dialog-description" class="dialog-description"></p>
+    <section class="dialog-resource-section" aria-labelledby="dialog-target-heading">
+      <div class="dialog-section-heading"><i data-lucide="external-link"></i><h3 id="dialog-target-heading">靶场入口</h3></div>
+      <div id="dialog-target" class="dialog-target"></div>
+    </section>
+    <section class="dialog-resource-section" aria-labelledby="dialog-files-heading">
+      <div class="dialog-section-heading"><i data-lucide="paperclip"></i><h3 id="dialog-files-heading">赛题附件</h3></div>
+      <div id="dialog-files" class="dialog-files"></div>
+    </section>
+    <form id="flag-form" class="flag-console"><label for="flag-input">ANSWER SUBMISSION</label><div><span class="console-prefix">$</span><input id="flag-input" name="flag" autocomplete="off" spellcheck="false" placeholder="输入赛题答案" maxlength="512"><button type="submit" class="primary-button"><i data-lucide="send"></i><span>提交</span></button></div><p id="flag-message" class="form-message"></p></form>
+  </dialog>
+
+  <dialog id="profile-dialog" class="profile-dialog" aria-labelledby="profile-title">
+    <button id="profile-dialog-close" class="dialog-close icon-button" type="button" aria-label="关闭个人资料"><i data-lucide="x"></i></button>
+    <div class="dialog-category">IDENTITY PROFILE</div>
+    <h2 id="profile-title">个人资料</h2>
+    <div class="profile-tabs" role="tablist" aria-label="个人资料设置">
+      <button id="profile-tab-avatar" type="button" role="tab" aria-selected="true" aria-controls="profile-panel-avatar" data-profile-tab="avatar"><i data-lucide="image"></i>头像</button>
+      <button id="profile-tab-account" type="button" role="tab" aria-selected="false" aria-controls="profile-panel-account" tabindex="-1" data-profile-tab="account"><i data-lucide="user-round"></i>账号资料</button>
+      <button id="profile-tab-password" type="button" role="tab" aria-selected="false" aria-controls="profile-panel-password" tabindex="-1" data-profile-tab="password"><i data-lucide="key-round"></i>修改密码</button>
+    </div>
+    <section id="profile-panel-avatar" role="tabpanel" aria-labelledby="profile-tab-avatar">
+    <div id="profile-avatar-preview" class="profile-avatar-preview" aria-label="头像预览"></div>
+    <form id="avatar-form" class="avatar-form" enctype="multipart/form-data">
+      <label class="avatar-picker" for="avatar-input"><i data-lucide="image-plus"></i><span>选择头像图片</span><small>JPG / PNG / WEBP / GIF · 最大 2 MB</small></label>
+      <input id="avatar-input" name="avatar" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+      <button id="avatar-submit" class="primary-button full" type="submit"><i data-lucide="upload"></i><span>上传并更新头像</span></button>
+      <p id="avatar-message" class="form-message" role="status"></p>
+    </form>
+    </section>
+    <section id="profile-panel-account" class="hidden" role="tabpanel" aria-labelledby="profile-tab-account">
+      <form id="profile-form" class="profile-form">
+        <label>用户名<span class="input-shell"><i data-lucide="at-sign"></i><input name="username" autocomplete="username" required></span></label>
+        <div class="form-grid two">
+          <label>姓名<span class="input-shell"><i data-lucide="contact-round"></i><input name="realName" autocomplete="name" required minlength="2" maxlength="32"></span></label>
+          <label>班级<span class="input-shell"><i data-lucide="school"></i><input name="className" required minlength="2" maxlength="64"></span></label>
+        </div>
+        <label>邮箱<span class="input-shell"><i data-lucide="mail"></i><input name="email" type="email" autocomplete="email" required maxlength="128"></span></label>
+        <label>当前密码<span class="input-shell"><i data-lucide="lock-keyhole"></i><input name="currentPassword" type="password" autocomplete="current-password" required maxlength="128"></span></label>
+        <button class="primary-button full" type="submit"><i data-lucide="save"></i><span>保存账号资料</span></button>
+        <p id="profile-message" class="form-message" role="status"></p>
+      </form>
+    </section>
+    <section id="profile-panel-password" class="hidden" role="tabpanel" aria-labelledby="profile-tab-password">
+      <form id="password-form" class="profile-form">
+        <label>当前密码<span class="input-shell"><i data-lucide="lock-keyhole"></i><input name="currentPassword" type="password" autocomplete="current-password" required maxlength="128"></span></label>
+        <label>新密码<span class="input-shell"><i data-lucide="key-round"></i><input name="newPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="8-128 位"></span></label>
+        <label>确认新密码<span class="input-shell"><i data-lucide="shield-check"></i><input name="confirmPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></span></label>
+        <button class="primary-button full" type="submit"><i data-lucide="check"></i><span>更新密码</span></button>
+        <p id="password-message" class="form-message" role="status"></p>
+      </form>
+    </section>
+  </dialog>
+
+  <div id="toast-region" class="toast-region" aria-live="polite"></div>
+
+  <script src="/vendor/lucide/lucide.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "nexus-arena",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A compact cybersecurity competition platform for a 50-person selection event.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "admin": "node scripts/manage-admin.js",
+    "test": "node --test tests/api.test.js",
+    "test:e2e": "playwright test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "adm-zip": "^0.6.1",
+    "better-sqlite3": "^13.0.0",
+    "cookie-parser": "^1.4.7",
+    "csv-parse": "^7.0.2",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "lucide": "^1.47.0",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}
