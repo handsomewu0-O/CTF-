@@ -121,8 +121,10 @@ bootstrapAdmin();
 
 app.set('trust proxy', process.env.NODE_ENV === 'production' ? 1 : false);
 app.disable('x-powered-by');
+const httpsEnabled = String(process.env.APP_ORIGIN || '').startsWith('https:');
 app.use(helmet({
   contentSecurityPolicy: {
+    useDefaults: false,
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'"],
@@ -134,8 +136,11 @@ app.use(helmet({
       frameAncestors: ["'none'"],
       baseUri: ["'self'"],
       formAction: ["'self'"],
+      scriptSrcAttr: ["'none'"],
+      ...(httpsEnabled ? { upgradeInsecureRequests: [] } : {}),
     },
   },
+  hsts: httpsEnabled ? undefined : false,
   crossOriginResourcePolicy: { policy: 'same-origin' },
 }));
 app.use(express.json({ limit: '256kb' }));
