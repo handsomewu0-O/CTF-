@@ -231,10 +231,11 @@ function setSession(res, userId) {
   const expiresAt = new Date(Date.now() + SESSION_HOURS * 60 * 60 * 1000).toISOString();
   db.prepare('INSERT INTO sessions(token_hash, csrf_token, user_id, created_at, expires_at) VALUES (?, ?, ?, ?, ?)')
     .run(digest(token), csrfToken, userId, createdAt, expiresAt);
+  const secureCookie = String(process.env.APP_ORIGIN || '').startsWith('https:');
   res.cookie(SESSION_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: secureCookie,
+    sameSite: secureCookie ? 'strict' : 'lax',
     maxAge: SESSION_HOURS * 60 * 60 * 1000,
     path: '/',
   });
