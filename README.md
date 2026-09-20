@@ -37,16 +37,33 @@ npm start
 
 ### 手机局域网预览
 
-未部署云服务器时，可以让手机和电脑连接同一个 Wi-Fi，在电脑上运行：
+未部署云服务器时，可以让手机和电脑/虚拟机连接同一个局域网后启动：
+
+Windows:
 
 ```powershell
 .\scripts\start-lan.ps1
 ```
 
-查看电脑的局域网 IPv4 地址（例如 `10.167.14.78`），然后在手机浏览器打开 `http://10.167.14.78:3100`。手机端不要使用 `localhost` 或 `127.0.0.1`。如果 Windows 防火墙拦截连接，请用管理员 PowerShell 放行局域网端口：
+Linux:
+
+```bash
+chmod +x scripts/start-lan.sh
+./scripts/start-lan.sh
+```
+
+查看主机的局域网 IPv4 地址（例如 `10.167.14.78`），然后在手机浏览器打开 `http://10.167.14.78:3100`。手机端不要使用 `localhost` 或 `127.0.0.1`。
+
+Windows 防火墙放行示例：
 
 ```powershell
 New-NetFirewallRule -DisplayName "Nexus Arena LAN 3100" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 3100 -RemoteAddress LocalSubnet -Profile Any
+```
+
+Linux 防火墙放行示例：
+
+```bash
+sudo ufw allow 3100/tcp
 ```
 
 该脚本只用于局域网预览，会临时使用开发模式和 HTTP Cookie；云服务器部署仍按下方 Nginx + HTTPS 方案运行，不要把此脚本用于公网。
